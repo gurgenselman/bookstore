@@ -56,7 +56,9 @@ public class AuthController {
                 .toList();
 
         final Optional<RefreshToken> optionalRefreshToken = refreshTokenService.findByUser(User.builder().id(userDetails.getId()).build());
-        final RefreshToken refreshToken = optionalRefreshToken.orElse(refreshTokenService.createRefreshToken(userDetails.getId()));
+
+        final RefreshToken refreshToken = optionalRefreshToken.orElseGet(
+                () -> refreshTokenService.createRefreshToken(userDetails.getId()));
 
         return ResponseEntity.ok(new JwtResponse(jwtToken,
                 userDetails.getId(),

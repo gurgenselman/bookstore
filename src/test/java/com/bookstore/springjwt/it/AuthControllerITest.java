@@ -1,3 +1,5 @@
+package com.bookstore.springjwt.it;
+
 import com.bookstore.springjwt.payload.request.LoginRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -12,7 +14,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AuthControllerIntegrationTest {
+class AuthControllerITest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -21,10 +23,10 @@ public class AuthControllerIntegrationTest {
     private ObjectMapper objectMapper;
 
     @Test
-    public void testAuthenticateUser_Success() throws Exception {
+    void testAuthenticateUser_Success() throws Exception {
         LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setUsername("existingUser");
-        loginRequest.setPassword("correctPassword");
+        loginRequest.setUsername("selman1");
+        loginRequest.setPassword("selman123");
 
         mockMvc.perform(post("/api/auth/signin")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -33,7 +35,7 @@ public class AuthControllerIntegrationTest {
     }
 
     @Test
-    public void testAuthenticateUser_Fail_WrongPassword() throws Exception {
+    void testAuthenticateUser_Fail_WrongPassword() throws Exception {
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setUsername("existingUser");
         loginRequest.setPassword("wrongPassword");
@@ -45,7 +47,7 @@ public class AuthControllerIntegrationTest {
     }
 
     @Test
-    public void testAuthenticateUser_Fail_NonExistingUser() throws Exception {
+    void testAuthenticateUser_Fail_NonExistingUser() throws Exception {
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setUsername("nonExistingUser");
         loginRequest.setPassword("anyPassword");
@@ -57,7 +59,7 @@ public class AuthControllerIntegrationTest {
     }
 
     @Test
-    public void testAuthenticateUser_Fail_NullUsername() throws Exception {
+    void testAuthenticateUser_Fail_NullUsername() throws Exception {
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setUsername(null);
         loginRequest.setPassword("anyPassword");
@@ -69,7 +71,7 @@ public class AuthControllerIntegrationTest {
     }
 
     @Test
-    public void testAuthenticateUser_Fail_NullPassword() throws Exception {
+    void testAuthenticateUser_Fail_NullPassword() throws Exception {
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setUsername("existingUser");
         loginRequest.setPassword(null);
@@ -81,7 +83,7 @@ public class AuthControllerIntegrationTest {
     }
 
     @Test
-    public void testAuthenticateUser_Fail_NullUsernameAndPassword() throws Exception {
+    void testAuthenticateUser_Fail_NullUsernameAndPassword() throws Exception {
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setUsername(null);
         loginRequest.setPassword(null);
@@ -93,7 +95,7 @@ public class AuthControllerIntegrationTest {
     }
 
     @Test
-    public void testAuthenticateUser_Fail_EmptyUsername() throws Exception {
+    void testAuthenticateUser_Fail_EmptyUsername() throws Exception {
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setUsername("");
         loginRequest.setPassword("anyPassword");
@@ -105,7 +107,7 @@ public class AuthControllerIntegrationTest {
     }
 
     @Test
-    public void testAuthenticateUser_Fail_EmptyPassword() throws Exception {
+    void testAuthenticateUser_Fail_EmptyPassword() throws Exception {
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setUsername("existingUser");
         loginRequest.setPassword("");
@@ -117,7 +119,7 @@ public class AuthControllerIntegrationTest {
     }
 
     @Test
-    public void testAuthenticateUser_Fail_EmptyUsernameAndPassword() throws Exception {
+    void testAuthenticateUser_Fail_EmptyUsernameAndPassword() throws Exception {
         LoginRequest loginRequest = new LoginRequest();
         loginRequest.setUsername("");
         loginRequest.setPassword("");
