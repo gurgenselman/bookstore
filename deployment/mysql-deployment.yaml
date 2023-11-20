@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  labels:
+    app: spring-bookstore-app
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: spring-bookstore-app
+  clusterIP: None
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pv-claim
+  labels:
+    app: spring-bookstore-app
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+  labels:
+    app: spring-bookstore-app
+spec:
+  selector:
+    matchLabels:
+      app: spring-bookstore-app
+      tier: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: spring-bookstore-app
+        tier: mysql
+    spec:
+      containers:
+        # We use a MySQL container for arm based cpu
+        - image: arm64v8/mysql:latest
+          name: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: password
+            - name: MYSQL_USER
+              value: 'user'
+            - name: MYSQL_PASSWORD
+              value: 'password'
+            - name: MYSQL_DATABASE
+              value: 'db'
+          livenessProbe:
+            tcpSocket:
+              port: 3306
+          ports:
+            - containerPort: 3306
+              name: mysql
+          volumeMounts:
+            - name: mysql-persistent-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: mysql-pv-claim
