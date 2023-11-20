@@ -19,7 +19,7 @@ spec:
   selector:
     matchLabels:
       app: spring-bookstore-app
-  replicas: 2 # Number of replicas that will be created for this deployment
+  replicas: 1 # Number of replicas that will be created for this deployment
   template:
     metadata:
       labels:
@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: spring-bookstore-app
-          image: bookstore-app # Image that will be used to containers in the cluster
+          image: selo/bookstore # Image that will be used to containers in the cluster
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8080 # The port that the container is running on in the cluster
