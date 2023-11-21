@@ -8,7 +8,7 @@ spec:
   ports:
     - port: 3306
   selector:
-    app: spring-bookstore-app
+    app: mysql
   clusterIP: None
 ---
 apiVersion: v1
@@ -16,7 +16,7 @@ kind: PersistentVolumeClaim
 metadata:
   name: mysql-pv-claim
   labels:
-    app: spring-bookstore-app
+    app: mysql
 spec:
   accessModes:
     - ReadWriteOnce
@@ -29,23 +29,23 @@ kind: Deployment
 metadata:
   name: mysql
   labels:
-    app: spring-bookstore-app
+    app: mysql
 spec:
   selector:
     matchLabels:
-      app: spring-bookstore-app
+      app: mysql
       tier: mysql
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
-        app: spring-bookstore-app
+        app: mysql
         tier: mysql
     spec:
       containers:
         # We use a MySQL container for arm based cpu
-        - image: arm64v8/mysql:latest
+        - image: mysql:latest
           name: mysql
           env:
             - name: MYSQL_ROOT_PASSWORD
